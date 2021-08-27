@@ -10,9 +10,11 @@
             </span>
         </div>
         <div>
-            <form @submit="postImage">
-                <input type="file" name="file" id="file" accept="image/*" capture="camera">
-                <input type="submit" value="Submit">
+            <form>
+                <div class="formInputs">
+                    <label for="cardBoard" class="button">Take picture</label>
+                    <input type="file" name="file" id="cardBoard" accept="image/*" capture="camera" @change="postImage">
+                </div>
             </form>
         </div>
     </div>
@@ -33,7 +35,7 @@ export default {
   methods: {
       async postImage(e) {
           e.preventDefault();
-          const fileInput = document.querySelector('#file');
+          const fileInput = document.querySelector('#cardBoard');
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
 
@@ -47,11 +49,10 @@ export default {
               this.extractedImages = []
               const json = await response.json();
               for(var idx in json) {
-                  const pred = json[idx];
-                  this.extractedImages.push(pred.card)
+                  this.extractedImages.push(json[idx].card)
               }
             } else {
-                this.status = "error, see console";
+                console.error("error happened.")
             }
       }
   }
@@ -63,5 +64,20 @@ export default {
 img {
   margin: 2px;
   border: 1px solid black;
+}
+
+.button {
+    border:1px solid green;
+    background-color: khaki;
+    padding:10px;
+}
+
+#cardBoard {
+    visibility: hidden;
+}
+
+.formInputs {
+    width:200px;
+    margin: 40px auto;
 }
 </style>
