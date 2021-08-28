@@ -8,6 +8,14 @@
             <span v-for="img in extractedImages" :key="img">
                 <img v-bind:src="require(`../assets/card_icons/${img}.png`)">
             </span>
+            <p>
+                {{foundSets.length}} found sets
+            </p>
+            <div v-for="set in foundSets" :key="set">
+                <span v-for="img in set" :key="img">
+                    <img v-bind:src="require(`../assets/card_icons/${img}.png`)">
+                </span>
+            </div>
         </div>
         <div>
             <form>
@@ -25,7 +33,8 @@ export default {
   name: 'SetSolver',
   data() {
       return {
-          extractedImages: []
+          extractedImages: [],
+          foundSets: []
       }
   },
   props: {
@@ -46,13 +55,16 @@ export default {
 
           const response = await fetch('/solve', options);
           if(response.ok) {
-              this.extractedImages = []
+              this.extractedImages = [];
               const json = await response.json();
-              for(var idx in json) {
-                  this.extractedImages.push(json[idx].card)
+              var extractedCards = json.extractedCards;
+              for(var idx in extractedCards) {
+                  this.extractedImages.push(extractedCards[idx].card);
               }
+
+              this.foundSets = json.foundSets;
             } else {
-                console.error("error happened.")
+                console.error("error happened.");
             }
       }
   }
