@@ -3,13 +3,13 @@
         <h1>{{ msg }}</h1>
         <div v-if="extractedImages.length > 0">
             <p>
-                {{extractedImages.length}} extracted cards
+                {{extractedImages.length}} cards extracted
             </p>
             <span v-for="img in extractedImages" :key="img">
                 <img v-bind:src="require(`../assets/card_icons/${img}.png`)">
             </span>
             <p>
-                {{foundSets.length}} found sets
+                {{foundSets.length}} sets found
             </p>
             <div v-for="set in foundSets" :key="set">
                 <span v-for="img in set" :key="img">
@@ -20,7 +20,7 @@
         <div>
             <form>
                 <div class="formInputs">
-                    <label for="cardBoard" class="button">Take picture</label>
+                    <label for="cardBoard" class="button" id="cardBoardLabel">Take picture</label>
                     <input type="file" name="file" id="cardBoard" accept="image/*" capture="camera" @change="postImage">
                 </div>
             </form>
@@ -44,6 +44,7 @@ export default {
   methods: {
       async postImage(e) {
           e.preventDefault();
+          this.toggleButtons(false);
           const fileInput = document.querySelector('#cardBoard');
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
@@ -66,7 +67,18 @@ export default {
             } else {
                 console.error("error happened.");
             }
-      }
+            this.toggleButtons(true);
+      },
+    
+    toggleButtons(enabled) {
+        const formButton = document.querySelector('#cardBoardLabel');
+        formButton.disabled = !enabled;
+        if(enabled) {
+            formButton.innerHTML = 'Take picture';
+        } else {
+            formButton.innerHTML = 'Processing...';
+        }
+    }
   }
 }
 </script>
