@@ -65,7 +65,8 @@ export default {
 
               this.foundSets = json.foundSets;
             } else {
-                console.error("error happened.");
+                const error = await response.text();
+                console.error(error);
             }
             this.toggleButtons(true);
       },

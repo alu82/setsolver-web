@@ -8,9 +8,8 @@ server {
         try_files $uri $uri/ /index.html;  
     } 
 
-    location /api {
+    location /api/ {
         proxy_buffering off;
-        rewrite ^/api(.*)$ $1 break;
         proxy_pass ${SETSOLVER_API_URL};
     } 
 }
