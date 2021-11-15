@@ -54,7 +54,7 @@ export default {
               body: formData
           }
 
-          const response = await fetch('/solve', options);
+          const response = await fetch('/api/solve', options);
           if(response.ok) {
               this.extractedImages = [];
               const json = await response.json();

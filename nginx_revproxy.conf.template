@@ -1,0 +1,16 @@
+server {
+    listen 8080;
+    client_max_body_size 10M;
+
+    location / {
+        root /usr/share/nginx/html;
+        index  index.html;
+        try_files $uri $uri/ /index.html;  
+    } 
+
+    location /api {
+        proxy_buffering off;
+        rewrite ^/api(.*)$ $1 break;
+        proxy_pass ${SETSOLVER_API_URL};
+    } 
+}
